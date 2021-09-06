@@ -560,8 +560,8 @@ def nextWord(currSeed, nextPos):
             if depth == 2 or depth == 4:
                 addr = b58encode(p[1:])
                 #DEBUG
-                print('path: '+path+'\n')
-                print('addr: '+addr+'\n')
+                #print('path: '+path+'\n')
+                #print('addr: '+addr+'\n')
                 if addr == searchAddr: #'GzrYzHUJUtKDHWmefBmX68g9BpJRLN9wNsqQKPvwge3W':
                     output = open('keys_'+str(seedCount)+'.txt', 'w')
                     output.write('Seed: ' + currSeed+'\n')
