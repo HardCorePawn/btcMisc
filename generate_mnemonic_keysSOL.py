@@ -22,7 +22,6 @@
 #
 
 import binascii
-import bitcoin
 import bisect
 import ed25519
 import hashlib
@@ -525,7 +524,22 @@ def nextWord(currSeed, nextPos):
         #print '  * chain code: ' + binascii.hexlify(c)
         #print '  * private: ' + binascii.hexlify(k)
         #print '  * public: ' + binascii.hexlify(p)
+        #addr = b58encode(p[1:])
+        #DEBUG
+        #print('addr: '+addr+'\n')
+        #if addr == searchAddr: #'GzrYzHUJUtKDHWmefBmX68g9BpJRLN9wNsqQKPvwge3W':
+        #    output = open('keys_'+str(seedCount)+'.txt', 'w')
+        #    output.write('Seed: ' + currSeed+'\n')
+        #    output.write('Path: ' + path+'\n')
+        #    output.write('Addr: ' + addr+'\n')
+        #    output.close()
+        #    sys.stdout.write("FOUND IT!!!!!!!!!!!!!!!!\n\n")
+        #    print("Seed: " + currSeed)
+        #    exit()
+
+        depth=0
         for i in derivationpath:
+            depth += 1
             if curve == 'ed25519':
                 # no public derivation for ed25519
                 i = i | privdev
@@ -543,15 +557,20 @@ def nextWord(currSeed, nextPos):
         #print '  * public: ' + binascii.hexlify(p[1:])
         #print '  * addr: ' + b58encode(p[1:])
         #print    
-        addr = b58encode(p[1:])
-        if addr == searchAddr: #'GzrYzHUJUtKDHWmefBmX68g9BpJRLN9wNsqQKPvwge3W':
-            output = open('keys_'+str(seedCount)+'.txt', 'w')
-            output.write('Seed: ' + currSeed+'\n')
-            output.write(addr)
-            output.close()
-            sys.stdout.write("FOUND IT!!!!!!!!!!!!!!!!\n\n")
-            print("Seed: " + currSeed)
-            exit()
+            if depth == 2 or depth == 4:
+                addr = b58encode(p[1:])
+                #DEBUG
+                print('path: '+path+'\n')
+                print('addr: '+addr+'\n')
+                if addr == searchAddr: #'GzrYzHUJUtKDHWmefBmX68g9BpJRLN9wNsqQKPvwge3W':
+                    output = open('keys_'+str(seedCount)+'.txt', 'w')
+                    output.write('Seed: ' + currSeed+'\n')
+                    output.write('Path: ' + path+'\n')
+                    output.write('Addr: ' + addr+'\n')
+                    output.close()
+                    sys.stdout.write("FOUND IT!!!!!!!!!!!!!!!!\n\n")
+                    print("Seed: " + currSeed)
+                    exit()
         
       except ValueError:
         if seedCount%1000 == 0:
